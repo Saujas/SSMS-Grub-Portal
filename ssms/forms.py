@@ -14,10 +14,10 @@ class Grub_CoordUserForm(forms.ModelForm):
 	def clean(self):
 		password = self.cleaned_data.get('password')
 		confirm_password = self.cleaned_data.get('confirm_password')
-    		if password and password != confirm_password:
-        		raise forms.ValidationError("Passwords don't match.")
+		if password and password != confirm_password:
+			raise forms.ValidationError("Passwords don't match.")
 	
-    		return self.cleaned_data
+			return self.cleaned_data
 	class Meta:
 	        model = User
 	        fields = ('username','password','confirm_password')
@@ -54,7 +54,7 @@ class BothForm(forms.ModelForm):
 
 class CoordStudentRegForm(forms.ModelForm):
 	class Meta:
-	        model = Grub_Student
+		model = Grub_Student
 		fields = ('student_id',)
 
 class ExcelUpload(forms.ModelForm):
@@ -92,10 +92,10 @@ class UploadFileForm(forms.Form):
             		filename = files.name
             		if filename.endswith('.xls') or filename.endswith('.xlsx') or filename.endswith('.csv'):
                 		return files
-           		else:
+            		else:
                 		raise forms.ValidationError("Unsupported File type.")
 
-        	return files
+		return files
 		
 	class meta:
 		('file',)
