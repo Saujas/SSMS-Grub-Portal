@@ -77,7 +77,7 @@ def send(request):
 						a.append(str(j.user_id)+"@pilani.bits-pilani.ac.in")
 						j.mail = "Sent"
 						j.save()
-					print a
+					print(a)
 					subject, from_email = str(i.name), 'ssms.pilani@gmail.com'
 					text_content = 'This is an important message.'
 					html_content = "<body><p>This is to inform you that you have been signed up for the <strong> "+str(i.name)+\
@@ -131,7 +131,7 @@ def send2(request):
 						a.append(str(j.user_id)+"@pilani.bits-pilani.ac.in")
 						j.mail = "Sent"
 						j.save()
-					print a
+					print(a)
 					subject, from_email = str(i.name) + " (Reminder)", 'ssms.pilani@gmail.com'
 					text_content = 'This is an important message.'
 					html_content = "<body><p>This is to remind you that you that you have been signed up for <strong> "+str(i.name)+"</strong> which will take place on <strong>"+ e +"</strong> at the <strong>"+meal+"</strong> Mess. </p> <p>Wristbands for the same are available at your mess counter, and you are requested to collect the same if you haven't already.</p><strong><p>Entry into the grub shall not be allowed if you are not wearing the wristband.</p></strong><p>Limited on spot signings will be available. Please carry your ID cards for the same. </p><p>Thank you.</p><p>Grub Committee, SSMS</p></body>"
@@ -172,14 +172,14 @@ def ssms_grub_sendmail1(request,gmid):
 			html_content = "<body><p>This is to inform you that you have been signed up for the <strong> "+str(grub.name)+"</strong> that is to take place on <strong>"+ e +"</strong> </p> <p>In case you wish to cancel your signing, please visit <a href=http://grub.ssms-pilani.org/ssms/student/grub/"+str(grub.gm_id)+"/ >SSMS Grub Portal</a>, before 12 midnight,<strong>" + h +"</strong>. Any requests made after the deadline will not be entertained. </p><p><strong> If the above url doesn't work, please click <a href=https://ssmsbitspilani.herokuapp.com/ssms/student/grub/"+str(grub.gm_id)+"/ >here</a></strong></p><p>Thank you.</p><p>Grub Committee, SSMS</p></body>"
 			msg = EmailMultiAlternatives(subject, text_content, from_email, cc = a, bcc=["f2015040@pilani.bits-pilani.ac.in"])
 			msg.attach_alternative(html_content, "text/html")
-			print a
+			print(a)
 			try :
 				msg.send(fail_silently=False)
 				count=count + len(a)
 				datemail.mails = datemail.mails+len(a)
 				datemail.save()
 			except Exception as e:
-				print e
+				print(e)
 				for j in students:
 					j.mail = "Not Sent"
 					j.save()
@@ -317,7 +317,7 @@ def ssms_grub_sendmail2(request,gmid):
 		allstu = Grub_Student.objects.filter(gm_id=grub.gm_id,status="Signed Up")
 		allgrubbatch = Batch.objects.filter(gm_id=grub)
 		if (len(allgrubbatch)==0):
-			print "here2"
+			print("here2")
 			#return JsonResponse({"is_taken" : "here"})
 			data = ssms_grub_sendmail3(grub,forloop,datemail,d,e,getspotsigning) #{'is_taken': "No batch allocated. Please allocate batch first." }
 			return JsonResponse({"is_taken" : data })
@@ -329,7 +329,7 @@ def ssms_grub_sendmail2(request,gmid):
 				veg = Both.objects.get(gm_id=grub)
 				venue = veg.veg_venue
 			all_batch = Batch.objects.filter(gm_id=grub,meal="Veg")
-			print all_batch
+			print(all_batch)
 			for i in all_batch:
 				abcd=Grub_Student.objects.filter(gm_id=grub.gm_id,status="Signed Up",batch=i)
 				k=len(abcd)//99
@@ -356,7 +356,7 @@ def ssms_grub_sendmail2(request,gmid):
 						<p>"+getspotsigning+" </p><p>Thank you.</p>\
 						<p>Regards,</p>\
 						<p>Grub Committee, SSMS</p></body>"
-						print a
+						print(a)
 						msg = EmailMultiAlternatives(subject, text_content, from_email, cc = a, bcc=["f2015040@pilani.bits-pilani.ac.in"])
 						msg.attach_alternative(html_content, "text/html")
 						try :
@@ -379,7 +379,7 @@ def ssms_grub_sendmail2(request,gmid):
 				veg = Both.objects.get(gm_id=grub)
 				venue = veg.non_veg_venue
 			all_batch = Batch.objects.filter(gm_id=grub,meal="Non Veg")
-			print all_batch
+			print(all_batch)
 			for i in all_batch:
 				abcd=Grub_Student.objects.filter(gm_id=grub.gm_id,status="Signed Up",batch=i)
 				k=len(abcd)//99
@@ -406,7 +406,7 @@ def ssms_grub_sendmail2(request,gmid):
 						<p>"+getspotsigning+" </p><p>Thank you.</p>\
 						<p>Regards,</p>\
 						<p>Grub Committee, SSMS</p></body>"
-						print a
+						print(a)
 						msg = EmailMultiAlternatives(subject, text_content, from_email, cc = a, bcc=["f2015040@pilani.bits-pilani.ac.in"])
 						msg.attach_alternative(html_content, "text/html")
 						try :
@@ -449,7 +449,7 @@ def ssms_grub_sendmail(request,gmid):
 			mailsleft = 1000 - datemail.mails
 			context_dict["mailsleft"]=mailsleft
 		except Exception as e:
-			print e	
+			print(e)	
 			context_dict["error"] = e
 		return render(request,'ssms/ssms_grub_sendmail.html',context_dict)
 	else :
@@ -526,8 +526,8 @@ def ssms_register(request):
 
 
 			else:
-				print user_form.errors
-				print profile_form.errors
+				print(user_form.errors)
+				print(profile_form.errors)
 
 		else:
 			user_form = Grub_CoordUserForm()
@@ -793,7 +793,7 @@ def coord_login(request):
 				return HttpResponse("Your ssms account is disabled.")	
 		else:
 			context_dict['invalid']="Invalid login details supplied."
-			print "Invalid login details: {0}, {1}".format(username, password)
+			print("Invalid login details: {0}, {1}".format(username, password))
 			return render(request,'ssms/coord_login.html', context_dict)
 
 	else:
@@ -891,7 +891,7 @@ def coord_grub_register(request):
 					done=1
 			
 			else:
-				print form.errors
+				print(form.errors)
 
 		else:
 			form = GrubForm()
@@ -997,7 +997,7 @@ def coord_upload(request,gmid):
 									invalid="No file uploaded."
 									return render(request, 'ssms/coord_upload.html', {'form': form,'grub':grub,"e":e,"invalid":invalid})
 							else:
-								print form.errors
+								print(form.errors)
 								invalid="Invalid File type."
 								return render(request, 'ssms/coord_upload.html', {'form': form,'grub':grub,"e":e,"invalid":invalid})
 						else :			
@@ -1086,7 +1086,7 @@ def coord_mem_upload(request,gmid):  # rename it to ssms_mem_upload coz admin up
 									invalid="No file uploaded."
 									return render(request, 'ssms/coord_mem_upload.html', {'form': form,'grub':grub,"e":e,"invalid":invalid})
 							else:
-								print form.errors
+								print(form.errors)
 								invalid="Invalid File type."
 								return render(request, 'ssms/coord_mem_upload.html', {'form': form,'grub':grub,"e":e,"invalid":invalid})
 						else :			
@@ -1170,7 +1170,7 @@ def coord_student_register(request,gmid):
 								else :
 									photo.user_id='f'+a[0:4]+a[8:12]
 							photo.user_id = photo.user_id.lower()
-							print photo.user_id
+							print(photo.user_id)
 							try :
 								d=Student.objects.get(bits_id=a)
 								photo.room=d.room_no
@@ -1186,7 +1186,7 @@ def coord_student_register(request,gmid):
 								return render(request, 'ssms/coord_student_register.html',{'form': form,'done':done,'grub':grub,'e':e,"invalid":invalid})
 							
 						else:
-							print form.errors
+							print(form.errors)
 					else:
 						form = CoordStudentRegForm()
 						grub = Grub.objects.get(gm_id=gmid)
@@ -1260,7 +1260,7 @@ def coord_grub_edit(request,gmid):
 						grub.save()
 						done=1		
 					else:
-						print form.errors
+						print(form.errors)
 				else:
 					form = GrubFormEdit(instance=inst)		
 				return render(request, 'ssms/coord_grub_edit.html', {'form': form,'done':done,'grub':grub})
@@ -1517,7 +1517,7 @@ def ssms_grub_batchallocation(request,gmid):
 						allocate(grub,grubstu,1,[batch1])
 						veg.batch_allocated = "Yes"
 						veg.save()
-						print request.POST
+						print(request.POST)
 					elif "VegAllocate2" in request.POST:
 						time1 = request.POST["batch1time"]
 						color1 = request.POST["batch1color"]
@@ -1539,7 +1539,7 @@ def ssms_grub_batchallocation(request,gmid):
 						allocate(grub,grubstu,2,[batch1,batch2])
 						veg.batch_allocated = "Yes"
 						veg.save()
-						print request.POST
+						print(request.POST)
 					elif "VegAllocate3" in request.POST:
 						time1 = request.POST["batch1time"]
 						color1 = request.POST["batch1color"]
@@ -1569,7 +1569,7 @@ def ssms_grub_batchallocation(request,gmid):
 						allocate(grub,grubstu,3,[batch1,batch2,batch3])
 						veg.batch_allocated = "Yes"
 						veg.save()
-						print request.POST
+						print(request.POST)
 					elif "VegAllocate4" in request.POST:
 						time1 = request.POST["batch1time"]
 						color1 = request.POST["batch1color"]
@@ -1607,7 +1607,7 @@ def ssms_grub_batchallocation(request,gmid):
 						allocate(grub,grubstu,3,[batch1,batch2,batch3,batch4])
 						veg.batch_allocated = "Yes"
 						veg.save()
-						print request.POST
+						print(request.POST)
 				elif grub.meal == "Non Veg":
 					nonveg = NonVeg.objects.get(gm_id=grub)
 					if "NonVegAllocate1" in request.POST:
@@ -1623,7 +1623,7 @@ def ssms_grub_batchallocation(request,gmid):
 						allocate(grub,grubstu,1,[batch1])
 						nonveg.batch_allocated = "Yes"
 						nonveg.save()
-						print request.POST
+						print(request.POST)
 					elif "NonVegAllocate2" in request.POST:
 						time1 = request.POST["batch1time"]
 						color1 = request.POST["batch1color"]
@@ -1645,7 +1645,7 @@ def ssms_grub_batchallocation(request,gmid):
 						allocate(grub,grubstu,2,[batch1,batch2])
 						nonveg.batch_allocated = "Yes"
 						nonveg.save()
-						print request.POST
+						print(request.POST)
 					elif "NonVegAllocate3" in request.POST:
 						time1 = request.POST["batch1time"]
 						color1 = request.POST["batch1color"]
@@ -1675,7 +1675,7 @@ def ssms_grub_batchallocation(request,gmid):
 						allocate(grub,grubstu,3,[batch1,batch2,batch3])
 						nonveg.batch_allocated = "Yes"
 						nonveg.save()
-						print request.POST
+						print(request.POST)
 					elif "NonVegAllocate4" in request.POST:
 						time1 = request.POST["batch1time"]
 						color1 = request.POST["batch1color"]
@@ -1713,7 +1713,7 @@ def ssms_grub_batchallocation(request,gmid):
 						allocate(grub,grubstu,3,[batch1,batch2,batch3,batch4])
 						nonveg.batch_allocated = "Yes"
 						nonveg.save()
-						print request.POST
+						print(request.POST)
 				elif grub.meal == "Both":
 					veg = Both.objects.get(gm_id=grub)
 					nonveg = veg
@@ -1730,7 +1730,7 @@ def ssms_grub_batchallocation(request,gmid):
 						allocate(grub,grubstu,1,[batch1])
 						veg.veg_batch_allocated = "Yes"
 						veg.save()
-						print request.POST
+						print(request.POST)
 					elif "VegAllocate2" in request.POST:
 						time1 = request.POST["batch1time"]
 						color1 = request.POST["batch1color"]
@@ -1752,7 +1752,7 @@ def ssms_grub_batchallocation(request,gmid):
 						allocate(grub,grubstu,2,[batch1,batch2])
 						veg.veg_batch_allocated = "Yes"
 						veg.save()
-						print request.POST
+						print(request.POST)
 					elif "VegAllocate3" in request.POST:
 						time1 = request.POST["batch1time"]
 						color1 = request.POST["batch1color"]
@@ -1782,7 +1782,7 @@ def ssms_grub_batchallocation(request,gmid):
 						allocate(grub,grubstu,3,[batch1,batch2,batch3])
 						veg.veg_batch_allocated = "Yes"
 						veg.save()
-						print request.POST
+						print(request.POST)
 					elif "VegAllocate4" in request.POST:
 						time1 = request.POST["batch1time"]
 						color1 = request.POST["batch1color"]
@@ -1820,7 +1820,7 @@ def ssms_grub_batchallocation(request,gmid):
 						allocate(grub,grubstu,3,[batch1,batch2,batch3,batch4])
 						veg.veg_batch_allocated = "Yes"
 						veg.save()
-						print request.POST
+						print(request.POST)
 					elif "NonVegAllocate1" in request.POST:
 						time1 = request.POST["batch1time"]
 						color1 = request.POST["batch1color"]
@@ -1834,7 +1834,7 @@ def ssms_grub_batchallocation(request,gmid):
 						allocate(grub,grubstu,1,[batch1])
 						nonveg.nonveg_batch_allocated = "Yes"
 						nonveg.save()
-						print request.POST
+						print(request.POST)
 					elif "NonVegAllocate2" in request.POST:
 						time1 = request.POST["batch1time"]
 						color1 = request.POST["batch1color"]
@@ -1856,7 +1856,7 @@ def ssms_grub_batchallocation(request,gmid):
 						allocate(grub,grubstu,2,[batch1,batch2])
 						nonveg.nonveg_batch_allocated = "Yes"
 						nonveg.save()
-						print request.POST
+						print(request.POST)
 					elif "NonVegAllocate3" in request.POST:
 						time1 = request.POST["batch1time"]
 						color1 = request.POST["batch1color"]
@@ -1886,7 +1886,7 @@ def ssms_grub_batchallocation(request,gmid):
 						allocate(grub,grubstu,3,[batch1,batch2,batch3])
 						nonveg.nonveg_batch_allocated = "Yes"
 						nonveg.save()
-						print request.POST
+						print(request.POST)
 					elif "NonVegAllocate4" in request.POST:
 						time1 = request.POST["batch1time"]
 						color1 = request.POST["batch1color"]
@@ -1924,7 +1924,7 @@ def ssms_grub_batchallocation(request,gmid):
 						allocate(grub,grubstu,3,[batch1,batch2,batch3,batch4])
 						nonveg.nonveg_batch_allocated = "Yes"
 						nonveg.save()
-						print request.POST
+						print(request.POST)
 				#students = Grub_Student.objects.filter().order_by('bhawan')
 				#count = len(students)
 				if grub.meal =="Both":
@@ -2030,7 +2030,7 @@ def menu_upload(request):
 				context_dict["error"] = "Succesfully Uploaded!!"
 				return render(request, 'ssms/menu_upload.html', context_dict)
 			except Exception as e:
-				print (e)
+				print(e)
 				context_dict["error"] = e
 				return render(request, 'ssms/menu_upload.html', context_dict)
 		else:
